@@ -1,35 +1,61 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useState } from "react";
+import Editor from "./Components/Editor";
 
-function App() {
-  const [count, setCount] = useState(0)
+const App = () => {
+  const [styledText, setStyledText] = useState([
+    { char: "|", font: "Arial", size: "16px", color: "black" },
+  ]);
+
+  const [cursorIndex, setCursorIndex] = useState(0);
+
+  const currentStyle = { font: "Arial", size: "16px", color: "black" };
+
+  const insertChar = (newChar) => {
+    const newCharObj = { char: newChar, ...currentStyle };
+    const textWithoutCursor = styledText.filter((c) => c.char !== "|");
+    const newText = [
+      ...textWithoutCursor.slice(0, cursorIndex),
+      newCharObj,
+      ...textWithoutCursor.slice(cursorIndex),
+    ];
+
+    // Insert cursor back
+    newText.splice(cursorIndex + 1, 0, { char: "|", ...currentStyle });
+
+    setStyledText(newText);
+    setCursorIndex(cursorIndex + 1);
+  };
+
+  const moveCursor = (direction) => {
+    const textWithoutCursor = styledText.filter((c) => c.char !== "|");
+    let newIndex = cursorIndex + (direction === "left" ? -1 : 1);
+
+    if (newIndex < 0) newIndex = 0;
+    if (newIndex > textWithoutCursor.length) newIndex = textWithoutCursor.length;
+
+    const newText = [
+      ...textWithoutCursor.slice(0, newIndex),
+      { char: "|", ...currentStyle },
+      ...textWithoutCursor.slice(newIndex),
+    ];
+
+    setStyledText(newText);
+    setCursorIndex(newIndex);
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div>
+      <h2>Text Editor</h2>
+      <Editor styledText={styledText} />
+      <div style={{ marginTop: "20px" }}>
+        <button onClick={() => insertChar("A")}>A</button>
+        <button onClick={() => insertChar("ב")}>ב</button>
+        <button onClick={() => insertChar("😊")}>😊</button>
+        <button onClick={() => moveCursor("left")}>⬅</button>
+        <button onClick={() => moveCursor("right")}>➡</button>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    </div>
+  );
+};
 
-export default App
+export default App;
