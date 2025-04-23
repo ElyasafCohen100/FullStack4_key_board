@@ -1,6 +1,6 @@
 import React from "react";
 
-const Key = ({key, char, onClick}) => {
+const Key = ({key, char, onClick, altText}) => {
   const handleClick = () => {
     onClick(char);
   };
@@ -12,10 +12,12 @@ const Key = ({key, char, onClick}) => {
         padding: "10px",
         fontSize: "16px",
         cursor: "pointer",
+        backgroundColor: "#f0f0f0",
+        border: "1px solid #ccc",
       }}
       onClick={handleClick}
     >
-      {char}
+      {altText == "" ? char : altText}
     </button>
   );
 }
