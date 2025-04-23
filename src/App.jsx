@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Editor from "./Components/Editor";
+import Keyboard from "./Components/keyboard";
 
 const App = () => {
   const [styledText, setStyledText] = useState([
@@ -48,11 +49,7 @@ const App = () => {
       <h2>Text Editor</h2>
       <Editor styledText={styledText} />
       <div style={{ marginTop: "20px" }}>
-        <button onClick={() => insertChar("A")}>A</button>
-        <button onClick={() => insertChar("ב")}>ב</button>
-        <button onClick={() => insertChar("😊")}>😊</button>
-        <button onClick={() => moveCursor("left")}>⬅</button>
-        <button onClick={() => moveCursor("right")}>➡</button>
+        <Keyboard onKeyPress={insertChar} />
       </div>
     </div>
   );

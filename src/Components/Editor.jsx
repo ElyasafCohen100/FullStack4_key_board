@@ -1,12 +1,51 @@
 import React from "react";
 import LetterSpan from "./LetterSpan";
+import { isRTL } from "../utils/textDirection";
+
+const splitIntoLines = (styledText) => {
+  const lines = [];
+  let currentLine = [];
+
+  for (const charObj of styledText) {
+    if (charObj.char === "\n") {
+      lines.push(currentLine);
+      currentLine = [];
+    } else {
+      currentLine.push(charObj);
+    }
+  }
+
+  if (currentLine.length > 0) {
+    lines.push(currentLine);
+  }
+
+  return lines;
+};
 
 const Editor = ({ styledText }) => {
+  const lines = splitIntoLines(styledText);
+
   return (
-    <div className="editor" style={styles.editor}>
-      {styledText.map((charObj, index) => (
-        <LetterSpan key={index} charObj={charObj} />
-      ))}
+    <div style={styles.editor}>
+      {lines.map((line, lineIndex) => {
+        const text = line.map((c) => c.char).join("");
+        const rtl = isRTL(text);
+        return (
+          <div
+            key={lineIndex}
+            style={{
+              direction: rtl ? "rtl" : "ltr",
+              textAlign: rtl ? "right" : "left",
+              display: "block",
+              width: "100%",
+            }}
+          >
+            {line.map((charObj, index) => (
+              <LetterSpan key={index} charObj={charObj} />
+            ))}
+          </div>
+        );
+      })}
     </div>
   );
 };
