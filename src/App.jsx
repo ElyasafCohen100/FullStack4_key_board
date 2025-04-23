@@ -14,13 +14,13 @@ const App = () => {
   const insertChar = (newChar) => {
     const newCharObj = { char: newChar, ...currentStyle };
     const textWithoutCursor = styledText.filter((c) => c.char !== "|");
+
     const newText = [
       ...textWithoutCursor.slice(0, cursorIndex),
       newCharObj,
       ...textWithoutCursor.slice(cursorIndex),
     ];
 
-    // Insert cursor back
     newText.splice(cursorIndex + 1, 0, { char: "|", ...currentStyle });
 
     setStyledText(newText);
@@ -31,8 +31,7 @@ const App = () => {
     const textWithoutCursor = styledText.filter((c) => c.char !== "|");
     let newIndex = cursorIndex + (direction === "left" ? -1 : 1);
 
-    if (newIndex < 0) newIndex = 0;
-    if (newIndex > textWithoutCursor.length) newIndex = textWithoutCursor.length;
+    newIndex = Math.max(0, Math.min(newIndex, textWithoutCursor.length));
 
     const newText = [
       ...textWithoutCursor.slice(0, newIndex),
@@ -44,11 +43,23 @@ const App = () => {
     setCursorIndex(newIndex);
   };
 
+  const viewStyles = {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "column",
+    height: "100vh",
+    width: "100vw", // makes sure it's full width for centering
+    boxSizing: "border-box",
+  };
+
   return (
-    <div>
+    <div style={viewStyles}>
       <h2>Text Editor</h2>
       <Editor styledText={styledText} />
-      <div style={{ marginTop: "20px" }}>
+      <div style={{ marginTop: "20px", textAlign: "center" }}>
+        <h3>Styles</h3>
+        <h3>Keyboard</h3>
         <Keyboard onKeyPress={insertChar} />
       </div>
     </div>
