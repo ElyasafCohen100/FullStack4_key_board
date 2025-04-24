@@ -27,6 +27,19 @@ const App = () => {
     setCursorIndex(cursorIndex + 1);
   };
 
+  const deleteChar = (key) => {
+    const textWithoutCursor = styledText.filter((c) => c.char !== "|");
+    if (cursorIndex > 0) {
+      const newText = [
+        ...textWithoutCursor.slice(0, cursorIndex - 1),
+        { char: "|", ...currentStyle },
+        ...textWithoutCursor.slice(cursorIndex),
+      ];
+      setStyledText(newText);
+      setCursorIndex(cursorIndex - 1);
+    }
+  }
+
   const moveCursor = (direction) => {
     const textWithoutCursor = styledText.filter((c) => c.char !== "|");
     let newIndex = cursorIndex + (direction === "left" ? -1 : 1);
@@ -60,7 +73,7 @@ const App = () => {
       <div style={{ marginTop: "20px", textAlign: "center" }}>
         <h3>Styles</h3>
         <h3>Keyboard</h3>
-        <Keyboard onKeyPress={insertChar} />
+        <Keyboard onKeyPress={insertChar} onBackPress={deleteChar} onArrowPress={moveCursor} />
       </div>
     </div>
   );
