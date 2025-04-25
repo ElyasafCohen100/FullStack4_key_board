@@ -1,16 +1,16 @@
 /**
  * =============================================================================
  * 🎹  Keyboard Component
- * 👥  Developed by: Elyasaf & חבר של אליסף ✨
+ * 👥  Developed by: Elyasaf & Shua ✨
  * 📝  Description: Virtual keyboard with full QWERTY layout and real structure
  * 📁  Part of Fullstack Project - Basic React Editor
  * =============================================================================
  */
 
-import "../App.css";
+import "../../App.css";
 import React, { useState } from "react";
 import Key from "./key";
-import { layouts } from "../utils/keyboardLayouts";
+import { layouts } from "../../utils/keyboardLayouts";
 
 // ==================================== Keyboard Component ==================================== //
 

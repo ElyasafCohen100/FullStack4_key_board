@@ -1,7 +1,7 @@
 /**
  * ======================================================
  * 🔤  LetterSpan Component
- * 👥  Developed by: Elyasaf & חבר של אליסף ✨
+ * 👥  Developed by: Elyasaf & Shua ✨
  * 📝  Description: Displays a single styled character
  * 📁  Part of Fullstack Project - Basic React Editor
  * ======================================================

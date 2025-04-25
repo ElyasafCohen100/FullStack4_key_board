@@ -1,7 +1,7 @@
 /**
  * ===============================================================================
  * ✂️  splitIntoLines Utility Function
- * 👥  Created by: Elyasaf & חבר של אליסף ✨
+ * 👥  Created by: Elyasaf & Shua ✨
  * 📝  Description: Splits an array of styled characters into logical text lines.
  * 📁  Part of Fullstack Project - Basic React Editor
  * ===============================================================================

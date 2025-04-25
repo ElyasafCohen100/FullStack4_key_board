@@ -1,13 +1,12 @@
 /**
  * ==================================================================
  * 🔘  Key Component
- * 👥  Developed by: Elyasaf & חבר של אליסף ✨
+ * 👥  Developed by: Elyasaf & Shua ✨
  * 📝  Description: Represents a single key on the virtual keyboard
  * 📁  Part of Fullstack Project - Basic React Editor
  * ==================================================================
  */
-
-import "../App.css";
+import "../../App.css";
 import React from "react";
 
 // ==================================== The Key component ==================================== //

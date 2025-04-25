@@ -1,7 +1,7 @@
 /**
  * ===========================================================================
  * 🧠  keyboardLayouts.js
- * 👥  Developed by: Elyasaf & חבר של אליסף ✨
+ * 👥  Developed by: Elyasaf & Shua ✨
  * 📝  Description: Defines the layout (structure) of keys for each language
  *                 Includes English, Hebrew, and Emoji keyboards.
  * 📁  Part of Fullstack Project - Basic React Editor

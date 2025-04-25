@@ -1,0 +1,46 @@
+.button {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+/* 📝 Editor */
+.editorContainer {
+    border: 2px solid #ffffff80;
+    padding: 12px;
+    min-height: 150px;
+    max-height: 160px;
+    font-family: monospace;
+    font-size: 22px;
+    color: #ffffff;
+    background-color: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(5px);
+    border-radius: 12px;
+    box-shadow: 0 0 12px #00000044;
+    overflow-y: auto;
+    width: 100%;
+    max-width: 900px;
+    margin-bottom: 12px;
+  }
+
+  .previewContainer {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end; 
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  .topButtons {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}

@@ -1,17 +1,18 @@
 /**
  * ==================================================================================
  * ✏️  Editor Component
- * 👥  Developed by: Elyasaf & חבר של אליסף ✨
+ * 👥  Developed by: Elyasaf & Shua ✨
  * 📝  Description: Editable text area that displays styled characters line by line
  * 📁  Part of Fullstack Project - Basic React Editor
  * ==================================================================================
  */
 
-import "../App.css";
+import "../../App.css";
 import React from "react";
-import LetterSpan from "./LetterSpan";
-import { isRTL } from "../utils/TextDirection";
-import { splitIntoLines } from "../utils/SplitIntoLines";
+import LetterSpan from "../LetterSpan";
+import { isRTL } from "../../utils/TextDirection";
+import { splitIntoLines } from "../../utils/SplitIntoLines";
+import styles from "./Preview.module.css"; // Import the CSS module for styling
 
 // ==================================== The Editor component ==================================== //
 
@@ -24,7 +25,7 @@ export default function Editor({ styledText }) {
 
   return (
 
-    <div className="editor-container">
+    <div className={styles.editorContainer}>
 
       {lines.map((line, lineIndex) => {
         const text = line.map((c) => c.char).join(""); // Extract the raw text
