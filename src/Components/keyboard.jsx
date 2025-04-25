@@ -1,78 +1,106 @@
+/**
+ * =============================================================================
+ * 🎹  Keyboard Component
+ * 👥  Developed by: Elyasaf & חבר של אליסף ✨
+ * 📝  Description: Virtual keyboard with full QWERTY layout and real structure
+ * 📁  Part of Fullstack Project - Basic React Editor
+ * =============================================================================
+ */
+
+import "../App.css";
 import React, { useState } from "react";
-import Key from "./Key"; // Assuming you have a Key component
+import Key from "./key";
+import { layouts } from "../utils/keyboardLayouts";
 
-const layouts = {
-  en: {
-    number: ['1','2','3','4','5','6','7','8','9','0'],
-    letters: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split(''),
-    specialKeys: ['\n', ' '],
-    special: { '\n': 'enter', ' ': 'space' },
-  },
-  he: {
-    number: ['1','2','3','4','5','6','7','8','9','0'],
-    letters: 'אבגדהוזחטיכלמנסעפצקרשת'.split(''),
-    specialKeys: ['\n', ' '],
-    special: { '\n': 'אנטר', ' ': 'רווח' },
-  },
-  em: {
-    number: ['1','2','3','4','5','6','7','8','9','0'],
-    letters: ['😀', '😂', '😍', '😎', '😢', '😡', '👍', '👎', '🎉', '❤️'],
-    specialKeys: ['\n', ' '],
-    special: { '\n': 'enter', ' ': 'space' },
-  }
-};
+// ==================================== Keyboard Component ==================================== //
 
-const Keyboard = ({ onKeyPress, onBackPress, onArrowPress}) => {
+export default function Keyboard({ onKeyPress, onBackPress, onArrowPress }) {
+
+  // ========= State for language and caps ========= //
   const [language, setLanguage] = useState("en");
-  const languageOrder = ["en", "he", "em"];
+  const [isCaps, setIsCaps] = useState(false);
 
+  // ========= Change to next language (en → he → em) ========= //
+  const languageOrder = ["en", "he", "em"];
   const switchLanguage = () => {
     const currentIndex = languageOrder.indexOf(language);
     const nextIndex = (currentIndex + 1) % languageOrder.length;
     setLanguage(languageOrder[nextIndex]);
   };
 
-  const { number, letters, special } = layouts[language];
+  // ========= Toggle caps lock ON/OFF ========= //
+  const toggleCaps = () => setIsCaps(!isCaps);
+
+  // ========= Load current layout ========= //
+  const layout = layouts[language];
+
+  // ========= Pick rows based on language ========= //
+  const rows = [
+    layout.numberRow,
+    layout.row1,
+    layout.row2,
+    layout.row3
+  ];
+
+  const special = layout.special;
 
   return (
-    <div style={{ textAlign: "center" }}>
-      <button onClick={switchLanguage}>Switch Language ({language.toUpperCase()})</button>
 
-      <div
-        style={{
-          display: "flex",
-          flexWrap: "wrap",
-          maxWidth: "500px",
-          justifyContent: "center",
-          marginTop: "10px",
-        }}
-      >
-        {[...number, ...letters, '\n', ' '].map((key, index) => (
+    <div className="keyboard-container">
+
+      <div className="keyboard-grid">
+
+        {/* ========= First row - numbers ========= */}
+        <div className="keyboard-row">
+          {layout.numberRow.map((key, i) => (
+            <Key key={i} char={key} onClick={onKeyPress} />
+          ))}
+          <Key char="backspace" altText={special.backspace} onClick={onBackPress} />
+        </div>
+
+        {/* ========= Second row - QWERTY row1 + Tab ========= */}
+        <div className="keyboard-row">
+          <Key char="tab" altText={special.tab} wide onClick={() => onKeyPress('\t')} />
+          {layout.row1.map((key, i) => (
+            <Key key={i} char={isCaps ? key.toUpperCase() : key} onClick={onKeyPress} />
+          ))}
+          <Key char="globe" altText={special.globe} onClick={switchLanguage} />
+        </div>
+
+        {/* ========= Third row - row2 + CapsLock ========= */}
+        <div className="keyboard-row">
           <Key
-            key={index}
-            char={key}
-            onClick={onKeyPress}
-            altText={special[key] || ""}
+            char="caps"
+            altText={special.caps}
+            wide
+            isActive={isCaps}
+            onClick={toggleCaps}
           />
-        ))}
-        <Key
-          key="backspace"
-          char="⌫"
-          onClick={onBackPress}
-          altText="" />
-          <Key
-          key="left"
-          char="left"
-          onClick={onArrowPress}
-          altText="<-" />
-          <Key
-          key="right"
-          char="right"
-          onClick={onArrowPress}
-          altText="->" />
+          {layout.row2.map((key, i) => (
+            <Key key={i} char={isCaps ? key.toUpperCase() : key} onClick={onKeyPress} />
+          ))}
+          <Key char="enter" altText={special.enter} tall onClick={() => onKeyPress("\n")} />
+        </div>
+
+        {/* ========= Fourth row - row3 + Shift ========= */}
+        <div className="keyboard-row">
+          <Key char="shift" altText={special.shift} wide onClick={() => { }} />
+          {layout.row3.map((key, i) => (
+            <Key key={i} char={isCaps ? key.toUpperCase() : key} onClick={onKeyPress} />
+          ))}
+          <Key char="shift" altText={special.shift} wide onClick={() => { }} />
+        </div>
+
+        {/* ========= Fifth row - Ctrl Alt Space Arrows ========= */}
+        <div className="keyboard-row">
+          <Key char="ctrl" altText={special.ctrl} wide onClick={() => { }} />
+          <Key char="alt" altText={special.alt} wide onClick={() => { }} />
+          <Key char="space" altText=" " space onClick={() => onKeyPress(" ")} />
+          <Key char="left" altText={special.left} onClick={() => onArrowPress("left")} />
+          <Key char="right" altText={special.right} onClick={() => onArrowPress("right")} />
+        </div>
+
       </div>
     </div>
   );
-};
-
-export default Keyboard;
+}
