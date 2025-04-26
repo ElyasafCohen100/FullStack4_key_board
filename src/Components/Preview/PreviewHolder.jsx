@@ -6,7 +6,7 @@ const PreviewHolder = ({ styledText, onSaveClick, onCloseClick, previews, toggle
     return (
         <div className={styles.previewHolder}>
             {previews.map((preview, index) => (
-                <Preview key={index} styledText={preview.styledText} 
+                <Preview key={index} index={index} styledText={preview.styledText} 
                 onSaveClick={onSaveClick} onCloseClick={onCloseClick}
                 isActive={preview.isActive} toggleCurEditor={toggleCurEditor} />
             ))}

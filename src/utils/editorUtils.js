@@ -1,44 +1,157 @@
-export const insertCharAt = (text, cursorIndex, charObj, currentStyle) => {
-    const textWithoutCursor = text.filter((c) => c.char !== "|");
-  
+// editorUtils.js
+
+export const defaultStyledText = [{ char: "|", font: "Arial", size: "16px", color: "black" }];
+
+export const hideCursor = (text, currentPreview) => {
+  return (text || currentPreview.styledText).filter((c) => c.char !== "|");
+};
+
+export const insertChar = (char, currentPreview, currentStyle, updatePreview, setSelectionRange) => {
+  const charObj = { char, ...currentStyle };
+  const textWithoutCursor = hideCursor(currentPreview.styledText, currentPreview);
+  const cursorIdx = currentPreview.cursorIndex || 0;
+  const newCursorIndex = cursorIdx + 1;
+
+  const newText = [
+    ...textWithoutCursor.slice(0, cursorIdx),
+    charObj,
+    ...textWithoutCursor.slice(cursorIdx)
+  ];
+
+  const textWithCursor = [
+    ...newText.slice(0, newCursorIndex),
+    { char: "|", ...currentStyle },
+    ...newText.slice(newCursorIndex)
+  ];
+
+  updatePreview(textWithCursor, newCursorIndex);
+  setSelectionRange(null);
+};
+
+export const deleteChar = (currentPreview, currentStyle, updatePreview, setSelectionRange) => {
+  const textWithoutCursor = hideCursor(currentPreview.styledText, currentPreview);
+  const cursorIdx = currentPreview.cursorIndex || 0;
+
+  if (cursorIdx > 0) {
     const newText = [
-      ...textWithoutCursor.slice(0, cursorIndex),
-      charObj,
-      { char: "|", ...currentStyle },
-      ...textWithoutCursor.slice(cursorIndex)
+      ...textWithoutCursor.slice(0, cursorIdx - 1),
+      ...textWithoutCursor.slice(cursorIdx)
     ];
-  
-    return newText;
-  };
-  
-  export const deleteCharAt = (text, cursorIndex, selectionRange, currentStyle) => {
-    const textWithoutCursor = text.filter((c) => c.char !== "|");
-  
-    if (selectionRange) {
-      const start = Math.min(selectionRange.start, selectionRange.end);
-      const end = Math.max(selectionRange.start, selectionRange.end);
-  
-      return {
-        newText: [
-          ...textWithoutCursor.slice(0, start),
-          { char: "|", ...currentStyle },
-          ...textWithoutCursor.slice(end)
-        ],
-        newCursorIndex: start
-      };
+
+    const newCursorIndex = cursorIdx - 1;
+
+    const textWithCursor = [
+      ...newText.slice(0, newCursorIndex),
+      { char: "|", ...currentStyle },
+      ...newText.slice(newCursorIndex)
+    ];
+
+    updatePreview(textWithCursor, newCursorIndex);
+    setSelectionRange(null);
+  }
+};
+
+export const deleteWord = (currentPreview, currentStyle, updatePreview, setSelectionRange) => {
+  const textWithoutCursor = hideCursor(currentPreview.styledText, currentPreview);
+  const cursorIdx = currentPreview.cursorIndex || 0;
+
+  if (cursorIdx > 0) {
+    const textBeforeCursor = textWithoutCursor
+      .slice(0, cursorIdx)
+      .map(obj => obj.char)
+      .join("");
+
+    const textAfterCursor = textWithoutCursor
+      .slice(cursorIdx)
+      .map(obj => obj.char)
+      .join("");
+
+    const words = textBeforeCursor.split(/\s+/);
+    words.pop();
+
+    const newTextBeforeCursor = words.join(" ");
+    const newCursorIndex = newTextBeforeCursor.length;
+    const fullNewText = newTextBeforeCursor + textAfterCursor;
+
+    const textWithCursor = [
+      ...fullNewText.split("").map(char => ({ char, ...currentStyle })),
+    ];
+
+    textWithCursor.splice(newCursorIndex, 0, { char: "|", ...currentStyle });
+
+    updatePreview(textWithCursor, newCursorIndex);
+    setSelectionRange(null);
+  }
+};
+
+export const clearText = (currentStyle, updatePreview, setSelectionRange) => {
+  const clearedText = [{ char: "|", ...currentStyle }];
+  updatePreview(clearedText, 0);
+  setSelectionRange(null);
+};
+
+export const moveCursor = (direction, currentPreview, currentStyle, updatePreview, setSelectionRange, isSelecting, setSelectionRangeSetter) => {
+  const textWithoutCursor = hideCursor(currentPreview.styledText, currentPreview);
+  const cursorIdx = currentPreview.cursorIndex || 0;
+
+  const newPosition = direction === "left"
+    ? Math.max(0, cursorIdx - 1)
+    : Math.min(textWithoutCursor.length, cursorIdx + 1);
+
+  if (isSelecting) {
+    setSelectionRangeSetter((prev) => prev
+      ? { start: prev.start, end: newPosition }
+      : { start: cursorIdx, end: newPosition });
+  } else {
+    setSelectionRange(null);
+  }
+
+  const newText = [
+    ...textWithoutCursor.slice(0, newPosition),
+    { char: "|", ...currentStyle },
+    ...textWithoutCursor.slice(newPosition)
+  ];
+
+  updatePreview(newText, newPosition);
+};
+
+// In editorUtils.js or wherever you put your text functions
+
+export function searchAndReplace(currentText, updatePreview, currentStyle) {
+  const charToFind = prompt("Enter the character to search for:");
+  if (!charToFind || charToFind.length !== 1) {
+    alert("Please enter a single character to search for.");
+    return;
+  }
+
+  const replacementChar = prompt(`Enter the replacement character for '${charToFind}':`);
+  if (!replacementChar || replacementChar.length !== 1) {
+    alert("Please enter a single replacement character.");
+    return;
+  }
+
+  // Hide the cursor for processing
+  const textWithoutCursor = currentText.filter(c => c.char !== "|");
+
+  // Create a new styled text array
+  const newText = textWithoutCursor.map(c => {
+    if (c.char === charToFind) {
+      return { ...c, char: replacementChar }; // replace only the character, keep style
     }
-  
-    if (cursorIndex > 0) {
-      return {
-        newText: [
-          ...textWithoutCursor.slice(0, cursorIndex - 1),
-          { char: "|", ...currentStyle },
-          ...textWithoutCursor.slice(cursorIndex)
-        ],
-        newCursorIndex: cursorIndex - 1
-      };
-    }
-  
-    return { newText: text, newCursorIndex: cursorIndex };
-  };
-  
+    return c; // otherwise, keep it as is
+  });
+
+  // Get cursor index (after replacement, cursor stays where it was)
+  const cursorIndex = currentText.findIndex(c => c.char === "|");
+  const safeCursorIndex = cursorIndex === -1 ? newText.length : cursorIndex;
+
+  // Insert cursor back
+  const finalText = [
+    ...newText.slice(0, safeCursorIndex),
+    { char: "|", ...currentStyle },
+    ...newText.slice(safeCursorIndex)
+  ];
+
+  // Update the parent state
+  updatePreview(finalText, safeCursorIndex);
+}

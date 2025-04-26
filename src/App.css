@@ -7,7 +7,7 @@
   margin: 0 auto;
   padding: 1rem;
   text-align: center;
-  height: 100vh;
+  min-height: 100vh;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -22,7 +22,7 @@ body {
   background-position: center;
   background-repeat: no-repeat;
   background-attachment: fixed;
-  overflow: hidden;
+  overflow-y: scroll;
 }
 
 .logo {
@@ -63,57 +63,6 @@ body {
   color: #888;
 }
 
-/* 📝 Editor */
-.editor-container {
-  border: 2px solid #ffffff80;
-  padding: 12px;
-  min-height: 150px;
-  max-height: 160px;
-  font-family: monospace;
-  font-size: 22px;
-  color: #ffffff;
-  background-color: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(5px);
-  border-radius: 12px;
-  box-shadow: 0 0 12px #00000044;
-  overflow-y: auto;
-  width: 100%;
-  max-width: 900px;
-  margin-bottom: 12px;
-}
-
-
-
-/* ⌨️ Key Buttons */
-.key-button {
-  margin: 4px;
-  padding: 8px;
-  font-size: 16px;
-  cursor: pointer;
-  background-color: #222;
-  color: #61dafb;
-  border: 2px solid #61dafb;
-  border-radius: 8px;
-  min-width: 50px;
-  font-weight: bold;
-  transition: all 0.2s ease;
-}
-
-.key-button:hover {
-  background-color: #61dafb;
-  color: white;
-  transform: scale(1.05);
-}
-
-.key-button.active {
-  background-color: #61dafb;
-  color: white;
-  box-shadow: 0 0 8px #61dafb;
-}
-
-.key-button.space {
-  min-width: 180px;
-}
 
 /* ↔️ Text Alignment */
 .text-line-rtl,
@@ -179,41 +128,7 @@ body {
   margin-bottom: 6px;
 }
 
-.keyboard-wrapper {
-  margin-top: 12px;
-}
 
-/* 🎹 Keyboard */
-.keyboard-container {
-  text-align: center;
-}
-
-.keyboard-grid {
-  display: flex;
-  flex-wrap: wrap;
-  max-width: 900px;
-  justify-content: center;
-  padding: 16px;
-  background-color: rgba(0, 0, 0, 0.7);
-  border: 2px solid #61dafb;
-  border-radius: 16px;
-  box-shadow: 0 0 20px #61dafb;
-  gap: 6px;
-  overflow-y: auto;
-}
-
-.keyboard-row {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 6px;
-}
-
-.row-2 {
-  margin-left: 16px;
-}
-.row-3 {
-  margin-left: 32px;
-}
 
 /* 📱 Mobile Adjustment */
 @media screen and (max-width: 600px) {

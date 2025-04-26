@@ -20,7 +20,7 @@ export const layouts = {
     row3: ['z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/'],
 
     // ========= Extra keys like space, caps, arrows etc ========= //
-    specialKeys: ['tab', 'caps', 'shift', 'ctrl', 'alt', 'space', 'enter', 'backspace', 'globe', 'left', 'right'],
+    specialKeys: ['tab', 'caps', 'shift', 'ctrl', 'alt', 'space', 'enter', 'backspace', 'globe', 'left', 'right', 'del', 'clear', 'search'],
 
     // ========= How to show these special keys ========= //
     special: {
@@ -35,6 +35,9 @@ export const layouts = {
       globe: '🌐',
       left: '←',
       right: '→',
+      del: 'Del',
+      clear: '🗑️',
+      search: '🔍',
     }
   },
 
@@ -48,7 +51,7 @@ export const layouts = {
     row3: ['ז', 'ס', 'ב', 'ה', 'נ', 'מ', 'צ', 'ת', 'ץ', '.'],
 
     // ========= Same extra keys as English ========= //
-    specialKeys: ['tab', 'caps', 'shift', 'ctrl', 'alt', 'space', 'enter', 'backspace', 'globe', 'left', 'right'],
+    specialKeys: ['tab', 'caps', 'shift', 'ctrl', 'alt', 'space', 'enter', 'backspace', 'globe', 'left', 'right', 'del', 'clear', 'search'],
 
     // ========= Translations or symbols ========= //
     special: {
@@ -63,6 +66,9 @@ export const layouts = {
       globe: '🌐',
       left: '←',
       right: '→',
+      del: 'Del',
+      clear: '🗑️',
+      search: '🔍',
     }
   },
 

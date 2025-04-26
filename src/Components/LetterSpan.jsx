@@ -13,20 +13,25 @@ import React from "react";
 
 // This component receives one character object (charObj),
 // and displays it inside a <span> with the given style.
-// Example styles: font, size, color.
 
 export default function LetterSpan({ charObj }) {
-  
-  const { char, font, size, color } = charObj;
+  const { char, bold, italic, underline, fontColor, fontSize, fontFamily } = charObj;
 
   // ========= Create inline styles from the charObj ========== //
   const style = {
-    fontFamily: font,
-    fontSize: size,
-    color: color,
-    display: "inline", // inline makes sure it flows with other letters
+    fontWeight: bold ? "bold" : "normal",
+    fontStyle: italic ? "italic" : "normal",
+    textDecoration: underline ? "underline" : "none",
+    color: fontColor || "#000000",
+    fontSize: fontSize ? `${fontSize}px` : "16px",
+    fontFamily: fontFamily || "Arial",
+    display: "inline",
   };
 
   // ========= Display the letter with "fire" class for special effect ========== //
-  return <span className="letter-fire" style={style}>{char}</span>;
+  return (
+    <span className="letter-fire" style={style}>
+      {char}
+    </span>
+  );
 }

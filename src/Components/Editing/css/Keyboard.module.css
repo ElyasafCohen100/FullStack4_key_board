@@ -1,0 +1,33 @@
+
+  
+  /* 🎹 Keyboard */
+  .keyboard-container {
+    text-align: center;
+  }
+  
+  .keyboard-grid {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 900px;
+    justify-content: center;
+    padding: 16px;
+    background-color: rgba(0, 0, 0, 0.7);
+    border: 2px solid #61dafb;
+    border-radius: 16px;
+    box-shadow: 0 0 20px #61dafb;
+    gap: 6px;
+    overflow-y: auto;
+  }
+  
+  .keyboard-row {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 6px;
+  }
+  
+  .row-2 {
+    margin-left: 16px;
+  }
+  .row-3 {
+    margin-left: 32px;
+  }

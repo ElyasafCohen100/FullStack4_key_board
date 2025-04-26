@@ -9,6 +9,8 @@
 import "../../App.css";
 import React from "react";
 
+import styles from "./css/Key.module.css"; // CSS module for styling
+
 // ==================================== The Key component ==================================== //
 
 // Props:
@@ -24,11 +26,11 @@ export default function Key({ char, onClick, altText, isActive, wide, tall, spac
   };
 
   // ========= Build class names based on props ========= //
-  const classes = ["key-button"];
-  if (wide) classes.push("wide");
-  if (tall) classes.push("tall");
-  if (space) classes.push("space");
-  if (isActive) classes.push("active");
+  const classes = [styles["key-button"]];
+  if (wide) classes.push(styles.wide);
+  if (tall) classes.push(styles.tall);
+  if (space) classes.push(styles.space);
+  if (isActive) classes.push(styles.active);
 
   return (
     <button className={classes.join(" ")} onClick={handleClick}>

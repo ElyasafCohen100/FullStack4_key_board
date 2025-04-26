@@ -9,18 +9,16 @@
 
 import "../../App.css";
 import React, { useState } from "react";
-import Key from "./key";
+import Key from "./Key";
 import { layouts } from "../../utils/keyboardLayouts";
+import styles from "./css/Keyboard.module.css"; // 👈 import your Keyboard.module.css
 
 // ==================================== Keyboard Component ==================================== //
 
-export default function Keyboard({ onKeyPress, onBackPress, onArrowPress }) {
-
-  // ========= State for language and caps ========= //
+export default function Keyboard({ onKeyPress, onBackPress, onArrowPress, onDeleteWord, onClearText, onSearch }) {
   const [language, setLanguage] = useState("en");
   const [isCaps, setIsCaps] = useState(false);
 
-  // ========= Change to next language (en → he → em) ========= //
   const languageOrder = ["en", "he", "em"];
   const switchLanguage = () => {
     const currentIndex = languageOrder.indexOf(language);
@@ -28,30 +26,17 @@ export default function Keyboard({ onKeyPress, onBackPress, onArrowPress }) {
     setLanguage(languageOrder[nextIndex]);
   };
 
-  // ========= Toggle caps lock ON/OFF ========= //
   const toggleCaps = () => setIsCaps(!isCaps);
 
-  // ========= Load current layout ========= //
   const layout = layouts[language];
-
-  // ========= Pick rows based on language ========= //
-  const rows = [
-    layout.numberRow,
-    layout.row1,
-    layout.row2,
-    layout.row3
-  ];
-
   const special = layout.special;
 
   return (
-
-    <div className="keyboard-container">
-
-      <div className="keyboard-grid">
+    <div className={styles["keyboard-container"]}>
+      <div className={styles["keyboard-grid"]}>
 
         {/* ========= First row - numbers ========= */}
-        <div className="keyboard-row">
+        <div className={styles["keyboard-row"]}>
           {layout.numberRow.map((key, i) => (
             <Key key={i} char={key} onClick={onKeyPress} />
           ))}
@@ -59,7 +44,7 @@ export default function Keyboard({ onKeyPress, onBackPress, onArrowPress }) {
         </div>
 
         {/* ========= Second row - QWERTY row1 + Tab ========= */}
-        <div className="keyboard-row">
+        <div className={styles["keyboard-row"]}>
           <Key char="tab" altText={special.tab} wide onClick={() => onKeyPress('\t')} />
           {layout.row1.map((key, i) => (
             <Key key={i} char={isCaps ? key.toUpperCase() : key} onClick={onKeyPress} />
@@ -68,7 +53,7 @@ export default function Keyboard({ onKeyPress, onBackPress, onArrowPress }) {
         </div>
 
         {/* ========= Third row - row2 + CapsLock ========= */}
-        <div className="keyboard-row">
+        <div className={styles["keyboard-row"]}>
           <Key
             char="caps"
             altText={special.caps}
@@ -83,7 +68,7 @@ export default function Keyboard({ onKeyPress, onBackPress, onArrowPress }) {
         </div>
 
         {/* ========= Fourth row - row3 + Shift ========= */}
-        <div className="keyboard-row">
+        <div className={styles["keyboard-row"]}>
           <Key char="shift" altText={special.shift} wide onClick={() => { }} />
           {layout.row3.map((key, i) => (
             <Key key={i} char={isCaps ? key.toUpperCase() : key} onClick={onKeyPress} />
@@ -92,12 +77,15 @@ export default function Keyboard({ onKeyPress, onBackPress, onArrowPress }) {
         </div>
 
         {/* ========= Fifth row - Ctrl Alt Space Arrows ========= */}
-        <div className="keyboard-row">
+        <div className={styles["keyboard-row"]}>
+          <Key char="search" altText={special.search} onClick={() => onSearch()} />
           <Key char="ctrl" altText={special.ctrl} wide onClick={() => { }} />
           <Key char="alt" altText={special.alt} wide onClick={() => { }} />
           <Key char="space" altText=" " space onClick={() => onKeyPress(" ")} />
           <Key char="left" altText={special.left} onClick={() => onArrowPress("left")} />
           <Key char="right" altText={special.right} onClick={() => onArrowPress("right")} />
+          <Key char="del" altText={special.del} onClick={() => onDeleteWord()} />
+          <Key char="clear" altText={special.clear} onClick={() => onClearText()} />
         </div>
 
       </div>

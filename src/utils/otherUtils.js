@@ -18,6 +18,6 @@ export function auth() {
   }
 
   // Save current user to localStorage
-  localStorage.setItem("CurrentUser", username);
+  sessionStorage.setItem("CurrentUser", username);
   alert(`Welcome back, ${userData.name}!`);
 }
