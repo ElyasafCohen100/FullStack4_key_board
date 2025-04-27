@@ -1,3 +1,12 @@
+/**
+ * ===================================================================================================
+ * 🖥️  App Component (Main)
+ * 👥  Developed by: Elyasaf & Shua ✨
+ * 📝  Description: Manages the entire app layout — file management, editor tabs, user authentication
+ * 📁  Part of Fullstack Project - Basic React Editor
+ * ===================================================================================================
+ */
+
 import "./App.css";
 import React, { useState } from "react";
 import FileView from "./Components/FileExplorer/FileView";
@@ -6,33 +15,38 @@ import TextArea from "./Components/TextArea";
 import { getSavedFiles, saveFile, loadFile } from "./utils/fileStorage";
 import { auth } from "./utils/otherUtils";
 
-// Ensure Users and temp user exists in localStorage
+// ==================================== Initial Authentication and User Setup ==================================== //
+
+// Ensure default users exist in localStorage
 if (!localStorage.getItem("Users")) {
   localStorage.setItem("Users", JSON.stringify([]));
+
   if (!localStorage.getItem("Shua")) {
-    localStorage.setItem("Shua", JSON.stringify({name: "Shua", password: "123", files: []}));
+    localStorage.setItem("Shua", JSON.stringify({ name: "Shua", password: "123", files: [] }));
     localStorage.setItem("ShuaFiles", JSON.stringify([]));
   }
+
   if (!localStorage.getItem("Elyasaf")) {
-    localStorage.setItem("Elyasaf", JSON.stringify({name: "Elyasaf", password: "123", files: []}));
+    localStorage.setItem("Elyasaf", JSON.stringify({ name: "Elyasaf", password: "123", files: [] }));
     localStorage.setItem("ElyasafFiles", JSON.stringify([]));
   }
 }
 
-// Add a check to ensure `auth()` is only called once
+// Run authentication once
 if (!sessionStorage.getItem("authChecked")) {
-  auth(); // Only call auth() once
+  auth();
   sessionStorage.setItem("authChecked", "true");
 }
+
+// Get the currently logged-in user
 const currentUser = sessionStorage.getItem("CurrentUser");
 
+// ==================================== App Component ==================================== //
 export default function App() {
-  // Default styled text for new editors
-  const defaultStyledText = [
-    { char: "|", font: "Arial", size: "16px", color: "black" }
-  ];
-  
-  // Define initial preview state
+  // ------------------------------------ State Management ------------------------------------ //
+
+  const defaultStyledText = [{ char: "|", font: "Arial", size: "16px", color: "black" }];
+
   const initialPreview = {
     styledText: defaultStyledText,
     isActive: true,
@@ -43,18 +57,16 @@ export default function App() {
   const [previews, setPreviews] = useState([initialPreview]);
   const [curPreviewIndex, setCurPreviewIndex] = useState(0);
 
-  // Handle opening an existing file
+  // ------------------------------------ File Operations ------------------------------------ //
+
+  // Open an existing file
   const onExistingFileClick = (file) => {
     const data = loadFile(currentUser + file);
+
     if (data && Array.isArray(data)) {
-      // Add cursor to the file data
       const textWithCursor = [...data, { char: "|", font: "Arial", size: "16px", color: "black" }];
-      
-      // Create new previews array with inactive current tab and new active tab
       const updatedPreviews = [...previews];
-      
-      
-      // Set current tab to inactive
+
       if (updatedPreviews[curPreviewIndex]) {
         const currentTextWithoutCursor = updatedPreviews[curPreviewIndex].styledText.filter(c => c.char !== '|');
         updatedPreviews[curPreviewIndex] = {
@@ -63,26 +75,22 @@ export default function App() {
           styledText: currentTextWithoutCursor
         };
       }
-      
-      // Add new tab with file data
+
       updatedPreviews.push({
         styledText: textWithCursor,
         isActive: true,
         cursorIndex: textWithCursor.length - 1
       });
-      
-      // Update state
+
       setPreviews(updatedPreviews);
       setCurPreviewIndex(updatedPreviews.length - 1);
     }
   };
 
-  // Handle creating a new file
+  // Create a new file
   const onNewFileClick = () => {
-    // Create new previews array with inactive current tab and new active tab
     const updatedPreviews = [...previews];
-    
-    // Set current tab to inactive
+
     if (updatedPreviews[curPreviewIndex]) {
       const currentTextWithoutCursor = updatedPreviews[curPreviewIndex].styledText.filter(c => c.char !== '|');
       updatedPreviews[curPreviewIndex] = {
@@ -91,20 +99,18 @@ export default function App() {
         styledText: currentTextWithoutCursor
       };
     }
-    
-    // Add new tab with default text
+
     updatedPreviews.push({
       styledText: defaultStyledText,
       isActive: true,
       cursorIndex: 0
     });
-    
-    // Update state
+
     setPreviews(updatedPreviews);
     setCurPreviewIndex(updatedPreviews.length - 1);
   };
 
-  // Handle saving a file
+  // Save a file
   const onSaveFileClick = (updatedStyledText) => {
     const fileName = prompt("Enter file name:");
     if (!fileName) return;
@@ -113,9 +119,12 @@ export default function App() {
     setFiles(updatedFiles);
   };
 
-  // Update preview state when text changes in TextArea
+  // ------------------------------------ Text Editing Operations ------------------------------------ //
+
+  // Update text inside an editor tab
   const updatePreview = (styledText, cursorIndex) => {
     const updatedPreviews = [...previews];
+
     if (updatedPreviews[curPreviewIndex]) {
       updatedPreviews[curPreviewIndex] = {
         ...updatedPreviews[curPreviewIndex],
@@ -126,72 +135,58 @@ export default function App() {
     }
   };
 
-  // Switch between preview tabs
-  // In App.jsx - modify toggleCurEditor
+  // Switch between editor tabs
   const toggleCurEditor = (index) => {
     if (index === curPreviewIndex || index >= previews.length) return;
-    
+
     const updatedPreviews = [...previews];
-    
-    // First, save the current cursor position for the current editor
     const currentEditor = updatedPreviews[curPreviewIndex];
     const currentTextWithoutCursor = currentEditor.styledText.filter(c => c.char !== '|');
-    
-    // Update current preview to be inactive and remove cursor
+
     updatedPreviews[curPreviewIndex] = {
       ...currentEditor,
       isActive: false,
       styledText: currentTextWithoutCursor
     };
-    
-    // Now handle the target editor we're switching to
-    console.log("Switching to editor at index:", index);
+
     const targetEditor = updatedPreviews[index];
     const targetTextWithoutCursor = targetEditor.styledText.filter(c => c.char !== '|');
     const targetCursorIdx = targetEditor.cursorIndex || 0;
-    
-    // Add cursor at the right position in the target editor
+
     const newTargetText = [
       ...targetTextWithoutCursor.slice(0, targetCursorIdx),
       { char: '|', font: 'Arial', size: '16px', color: 'black' },
       ...targetTextWithoutCursor.slice(targetCursorIdx)
     ];
-    
-    // Update target editor to be active with cursor
+
     updatedPreviews[index] = {
       ...targetEditor,
       isActive: true,
       styledText: newTargetText
     };
-    
+
     setPreviews(updatedPreviews);
     setCurPreviewIndex(index);
   };
+
   // Close a preview tab
   const onCloseClick = (index) => {
     if (previews.length <= 1) {
       alert("You cannot close the last editor.");
       return;
     }
-  
+
     const updatedPreviews = [...previews];
-    
-    // Calculate new active index
     let newActiveIndex = curPreviewIndex;
-    
-    // If closing active tab
+
     if (index === curPreviewIndex) {
       newActiveIndex = index === 0 ? 0 : index - 1;
-    } 
-    // If closing tab before current tab
-    else if (index < curPreviewIndex) {
+    } else if (index < curPreviewIndex) {
       newActiveIndex = curPreviewIndex - 1;
     }
-    
-    // Make sure the new active index is valid (after removing the tab)
+
     const finalActiveIndex = Math.min(newActiveIndex, updatedPreviews.length - 2);
-    
-    // First, process all editors to remove cursors
+
     const cleanPreviews = updatedPreviews.map(preview => {
       const textWithoutCursor = preview.styledText.filter(c => c.char !== '|');
       return {
@@ -200,15 +195,13 @@ export default function App() {
         styledText: textWithoutCursor
       };
     });
-    
-    // Remove the tab we want to close
+
     cleanPreviews.splice(index, 1);
-    
-    // Now set the new active editor with cursor
+
     if (cleanPreviews[finalActiveIndex]) {
       const cursorPos = cleanPreviews[finalActiveIndex].cursorIndex || 0;
       const textWithoutCursor = cleanPreviews[finalActiveIndex].styledText;
-      
+
       cleanPreviews[finalActiveIndex] = {
         ...cleanPreviews[finalActiveIndex],
         isActive: true,
@@ -219,10 +212,12 @@ export default function App() {
         ]
       };
     }
-    
+
     setPreviews(cleanPreviews);
     setCurPreviewIndex(finalActiveIndex);
   };
+
+  // ==================================== Render the App Layout ==================================== //
 
   return (
     <div className="app-container">
@@ -234,7 +229,7 @@ export default function App() {
         />
 
         <div className="editor-area">
-          <TextArea 
+          <TextArea
             previews={previews}
             curPreviewIndex={curPreviewIndex}
             toggleCurEditor={toggleCurEditor}

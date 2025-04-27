@@ -14,7 +14,7 @@
   
   .fileButton {
     width: 100%;
-    padding: 10px;
+    padding: 10px; 
     margin: 5px 0;
     background-color: #34495e;  /* Button background color */
     border: none;               /* Remove default border */

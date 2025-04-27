@@ -1,3 +1,11 @@
+/* ======================================================================
+   🎹  Keyboard Wrapper Style
+   👥  Developed by: Elyasaf & Shua ✨
+   📝  Description: Adds a margin above the virtual keyboard container
+   📁  Part of Fullstack Project - Basic React Editor
+=========================================================================
+ */
+
 .keyboardWrapper {
-    margin-top: 12px;
-  }
+  margin-top: 12px; /* Add space above the keyboard */
+}

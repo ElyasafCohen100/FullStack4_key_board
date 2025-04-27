@@ -1,3 +1,13 @@
+/* ====================================================================================================================
+   🎨  Global Styles (App Base Styling)
+   👥  Developed by: Elyasaf & Shua ✨
+   📝  Description: Base styles for the full application, including fonts, links, body, buttons, and light/dark themes
+   📁  Part of Fullstack Project - Basic React Editor
+=======================================================================================================================
+ */
+
+/* Base settings for the entire document */
+
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;

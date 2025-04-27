@@ -1,6 +1,15 @@
+/**
+ * =======================================================================================
+ * 📝  TextArea Component
+ * 👥  Developed by: Elyasaf & Shua ✨
+ * 📝  Description: Manages editing and previewing of styled text, handling user actions
+ * 📁  Part of Fullstack Project - Basic React Editor
+ * =======================================================================================
+ */
 import React, { useState } from "react";
-import PreviewHolder from "./Preview/PreviewHolder";
-import EditingHolder from "./Editing/EditingHolder";
+import PreviewHolder from "./Preview/PreviewHolder"; // Import the PreviewHolder component
+import EditingHolder from "./Editing/EditingHolder"; // Import the EditingHolder component
+
 import { 
   defaultStyledText, 
   insertChar, 
@@ -9,7 +18,16 @@ import {
   clearText, 
   moveCursor,
   searchAndReplace
-} from "../utils/editorUtils";
+} from "../utils/editorUtils"; // Import editor utility functions
+
+// ==================================== The TextArea component ==================================== //
+// Props:
+// - previews: array of all previews
+// - curPreviewIndex: index of the currently active preview
+// - toggleCurEditor: function to switch to editing mode
+// - onCloseClick: function to close a preview
+// - updatePreview: function to update a preview's content
+// - onSaveClick: function to save a preview
 
 export default function TextArea({ 
   previews, 
@@ -19,11 +37,13 @@ export default function TextArea({
   updatePreview, 
   onSaveClick 
 }) {
+  // Get the current preview or create a default one if none exists
   const currentPreview = previews[curPreviewIndex] || { 
     styledText: defaultStyledText, 
     cursorIndex: 0 
   };
 
+  // State for managing the current text style
   const [currentStyle, setCurrentStyle] = useState({
     bold: false,
     italic: false,
@@ -32,8 +52,12 @@ export default function TextArea({
     fontSize: "16",
     fontFamily: "Arial",
   });
+
+  // State for managing text selection
   const [selectionRange, setSelectionRange] = useState(null);
   const [isSelecting, setIsSelecting] = useState(false);
+
+  // ==================================== Handlers for editing actions ==================================== //
 
   const handleInsertChar = (char) => {
     insertChar(char, currentPreview, currentStyle, updatePreview, setSelectionRange);
@@ -72,6 +96,8 @@ export default function TextArea({
     searchAndReplace(currentPreview.styledText, updatePreview, currentStyle);
   };
 
+  // ==================================== Render the Preview and Editing areas ==================================== //
+
   return (
     <>
       <PreviewHolder 
@@ -82,6 +108,7 @@ export default function TextArea({
         onCloseClick={handleCloseClick}
         curPreviewIndex={curPreviewIndex}
       />
+      
       <EditingHolder 
         currentStyle={currentStyle}
         onStyleChange={setCurrentStyle}

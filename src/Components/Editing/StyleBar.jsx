@@ -1,9 +1,22 @@
+/**
+ * ====================================================================================================
+ * 🎨  StyleBar Component
+ * 👥  Developed by: Elyasaf & Shua ✨
+ * 📝  Description: Toolbar for text styling (bold, italic, underline, color, font size, font family)
+ * 📁  Part of Fullstack Project - Basic React Editor
+ * =====================================================================================================
+ */
 import React, { useState } from "react";
-import StyleButton from "./StyleButton";
-import styles from "./css/StyleBar.module.css";
+import StyleButton from "./StyleButton"; // Small button component for individual styles
+import styles from "./css/StyleBar.module.css"; // Local CSS module for styling
+
+// ==================================== The StyleBar component ==================================== //
+// Props:
+// - onStyleChange: function to notify parent about style updates
 
 export default function StyleBar({ onStyleChange }) {
-  // default style
+
+  // default style settings: //
   const [activeStyles, setActiveStyles] = useState({
     bold: false,
     italic: false,
@@ -13,7 +26,7 @@ export default function StyleBar({ onStyleChange }) {
     fontFamily: "Arial",
   });
 
-  // toogle a style (ie bold)
+  // Toggle a style like bold, italic, underline
   const toggleStyle = (style) => {
     setActiveStyles((prev) => {
       const updated = { ...prev, [style]: !prev[style] };
@@ -22,7 +35,7 @@ export default function StyleBar({ onStyleChange }) {
     });
   };
 
-  // change color of font
+  // Change font color
   const changeFontColor = (e) => {
     const color = e.target.value;
     setActiveStyles((prev) => {
@@ -32,7 +45,7 @@ export default function StyleBar({ onStyleChange }) {
     });
   };
 
-  // change font size
+  // Change font size
   const changeFontSize = (e) => {
     const size = e.target.value;
     setActiveStyles((prev) => {
@@ -42,7 +55,7 @@ export default function StyleBar({ onStyleChange }) {
     });
   };
 
-  // change font family
+  // Change font family
   const changeFontFamily = (e) => {
     const font = e.target.value;
     setActiveStyles((prev) => {
@@ -53,23 +66,15 @@ export default function StyleBar({ onStyleChange }) {
   };
 
   return (
-    <div className={styles.bar}>
-      <StyleButton
-        label="B"
-        active={activeStyles.bold}
-        onClick={() => toggleStyle("bold")}
-      />
-      <StyleButton
-        label="I"
-        active={activeStyles.italic}
-        onClick={() => toggleStyle("italic")}
-      />
-      <StyleButton
-        label="U"
-        active={activeStyles.underline}
-        onClick={() => toggleStyle("underline")}
-      />
 
+    <div className={styles.bar}>
+
+      {/* Style buttons: Bold, Italic, Underline */}
+      <StyleButton label="B" active={activeStyles.bold} onClick={() => toggleStyle("bold")} />
+      <StyleButton label="I" active={activeStyles.italic} onClick={() => toggleStyle("italic")} />
+      <StyleButton label="U" active={activeStyles.underline} onClick={() => toggleStyle("underline")} />
+
+      {/* Color picker */}
       <input
         type="color"
         value={activeStyles.fontColor}
@@ -77,6 +82,7 @@ export default function StyleBar({ onStyleChange }) {
         className={styles.colorPicker}
       />
 
+      {/* Font size selector */}
       <select
         value={activeStyles.fontSize}
         onChange={changeFontSize}
@@ -89,6 +95,7 @@ export default function StyleBar({ onStyleChange }) {
         ))}
       </select>
 
+      {/* Font family selector */}
       <select
         value={activeStyles.fontFamily}
         onChange={changeFontFamily}
@@ -99,7 +106,9 @@ export default function StyleBar({ onStyleChange }) {
             {font}
           </option>
         ))}
+
       </select>
+
     </div>
   );
 }
