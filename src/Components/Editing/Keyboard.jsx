@@ -16,9 +16,11 @@ import styles from "./css/Keyboard.module.css"; // 👈 import your Keyboard.mod
 // ==================================== Keyboard Component ==================================== //
 
 export default function Keyboard({ onKeyPress, onBackPress, onArrowPress, onDeleteWord, onClearText, onSearch }) {
+  // set initial language and caps lock
   const [language, setLanguage] = useState("en");
   const [isCaps, setIsCaps] = useState(false);
 
+  // available languages
   const languageOrder = ["en", "he", "em"];
   const switchLanguage = () => {
     const currentIndex = languageOrder.indexOf(language);

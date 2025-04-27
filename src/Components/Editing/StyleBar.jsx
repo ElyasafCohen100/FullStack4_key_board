@@ -3,6 +3,7 @@ import StyleButton from "./StyleButton";
 import styles from "./css/StyleBar.module.css";
 
 export default function StyleBar({ onStyleChange }) {
+  // default style
   const [activeStyles, setActiveStyles] = useState({
     bold: false,
     italic: false,
@@ -12,6 +13,7 @@ export default function StyleBar({ onStyleChange }) {
     fontFamily: "Arial",
   });
 
+  // toogle a style (ie bold)
   const toggleStyle = (style) => {
     setActiveStyles((prev) => {
       const updated = { ...prev, [style]: !prev[style] };
@@ -20,6 +22,7 @@ export default function StyleBar({ onStyleChange }) {
     });
   };
 
+  // change color of font
   const changeFontColor = (e) => {
     const color = e.target.value;
     setActiveStyles((prev) => {
@@ -29,6 +32,7 @@ export default function StyleBar({ onStyleChange }) {
     });
   };
 
+  // change font size
   const changeFontSize = (e) => {
     const size = e.target.value;
     setActiveStyles((prev) => {
@@ -38,6 +42,7 @@ export default function StyleBar({ onStyleChange }) {
     });
   };
 
+  // change font family
   const changeFontFamily = (e) => {
     const font = e.target.value;
     setActiveStyles((prev) => {

@@ -38,8 +38,7 @@ export default function App() {
     isActive: true,
     cursorIndex: 0
   };
-  
-  // State moved from TextArea to App
+
   const [files, setFiles] = useState(() => getSavedFiles(currentUser));
   const [previews, setPreviews] = useState([initialPreview]);
   const [curPreviewIndex, setCurPreviewIndex] = useState(0);
@@ -54,11 +53,14 @@ export default function App() {
       // Create new previews array with inactive current tab and new active tab
       const updatedPreviews = [...previews];
       
+      
       // Set current tab to inactive
       if (updatedPreviews[curPreviewIndex]) {
+        const currentTextWithoutCursor = updatedPreviews[curPreviewIndex].styledText.filter(c => c.char !== '|');
         updatedPreviews[curPreviewIndex] = {
           ...updatedPreviews[curPreviewIndex],
-          isActive: false
+          isActive: false,
+          styledText: currentTextWithoutCursor
         };
       }
       
@@ -82,9 +84,11 @@ export default function App() {
     
     // Set current tab to inactive
     if (updatedPreviews[curPreviewIndex]) {
+      const currentTextWithoutCursor = updatedPreviews[curPreviewIndex].styledText.filter(c => c.char !== '|');
       updatedPreviews[curPreviewIndex] = {
         ...updatedPreviews[curPreviewIndex],
-        isActive: false
+        isActive: false,
+        styledText: currentTextWithoutCursor
       };
     }
     

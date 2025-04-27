@@ -16,6 +16,7 @@
  * @returns {Array} Array of lines (each line is an array of character objects)  *
  =============================================================================== */
 
+// split by lines
 export function splitIntoLines(styledText) {
   const lines = [];
   let currentLine = [];

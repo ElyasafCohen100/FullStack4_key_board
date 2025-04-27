@@ -1,6 +1,8 @@
+// get a list of saved files of the current user
 export const getSavedFiles = (curUser) =>
     JSON.parse(localStorage.getItem(curUser+"Files"));
   
+// save a file to local storage
 export const saveFile = (fileName, content, curUser) => {
   const existing = localStorage.getItem(curUser+fileName);
   if (existing) {
@@ -20,11 +22,12 @@ export const saveFile = (fileName, content, curUser) => {
 
   return currentFiles;
 };
-  
-  export const loadFile = (fileName) => {
-    const data = localStorage.getItem(fileName);
-    return JSON.parse(data);
-  };
+
+// load a file
+export const loadFile = (fileName) => {
+  const data = localStorage.getItem(fileName);
+  return JSON.parse(data);
+};
   
 
 // export const onCloseEditor = (openEditors,)

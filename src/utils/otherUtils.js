@@ -1,5 +1,6 @@
 // utils/otherUtils.js
 
+// simple auth system
 export function auth() {
   const username = prompt("Enter username:");
   const password = prompt("Enter password:");

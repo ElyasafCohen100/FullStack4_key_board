@@ -1,23 +1,26 @@
 // editorUtils.js
 
+// starter text, empty text with a cursor at the front. saved as a list of objects with data on how they are displayed.
 export const defaultStyledText = [{ char: "|", font: "Arial", size: "16px", color: "black" }];
 
+// helper function returns text eithout the cursor
 export const hideCursor = (text, currentPreview) => {
   return (text || currentPreview.styledText).filter((c) => c.char !== "|");
 };
 
+// helper function to insert a character
 export const insertChar = (char, currentPreview, currentStyle, updatePreview, setSelectionRange) => {
   const charObj = { char, ...currentStyle };
   const textWithoutCursor = hideCursor(currentPreview.styledText, currentPreview);
   const cursorIdx = currentPreview.cursorIndex || 0;
   const newCursorIndex = cursorIdx + 1;
-
   const newText = [
     ...textWithoutCursor.slice(0, cursorIdx),
     charObj,
     ...textWithoutCursor.slice(cursorIdx)
   ];
 
+  // add cursor back after adding character
   const textWithCursor = [
     ...newText.slice(0, newCursorIndex),
     { char: "|", ...currentStyle },
@@ -28,6 +31,7 @@ export const insertChar = (char, currentPreview, currentStyle, updatePreview, se
   setSelectionRange(null);
 };
 
+// delete a character at the cursor position
 export const deleteChar = (currentPreview, currentStyle, updatePreview, setSelectionRange) => {
   const textWithoutCursor = hideCursor(currentPreview.styledText, currentPreview);
   const cursorIdx = currentPreview.cursorIndex || 0;
@@ -51,6 +55,7 @@ export const deleteChar = (currentPreview, currentStyle, updatePreview, setSelec
   }
 };
 
+// delete a word at the cursor position
 export const deleteWord = (currentPreview, currentStyle, updatePreview, setSelectionRange) => {
   const textWithoutCursor = hideCursor(currentPreview.styledText, currentPreview);
   const cursorIdx = currentPreview.cursorIndex || 0;
@@ -84,12 +89,14 @@ export const deleteWord = (currentPreview, currentStyle, updatePreview, setSelec
   }
 };
 
+// clear the text and set the cursor at the beginning
 export const clearText = (currentStyle, updatePreview, setSelectionRange) => {
   const clearedText = [{ char: "|", ...currentStyle }];
   updatePreview(clearedText, 0);
   setSelectionRange(null);
 };
 
+// move the cursor left or right
 export const moveCursor = (direction, currentPreview, currentStyle, updatePreview, setSelectionRange, isSelecting, setSelectionRangeSetter) => {
   const textWithoutCursor = hideCursor(currentPreview.styledText, currentPreview);
   const cursorIdx = currentPreview.cursorIndex || 0;
@@ -119,11 +126,13 @@ export const moveCursor = (direction, currentPreview, currentStyle, updatePrevie
 
 export function searchAndReplace(currentText, updatePreview, currentStyle) {
   const charToFind = prompt("Enter the character to search for:");
+  //only replace one character as project rules dictate
   if (!charToFind || charToFind.length !== 1) {
     alert("Please enter a single character to search for.");
     return;
   }
 
+  // get replacement character from user
   const replacementChar = prompt(`Enter the replacement character for '${charToFind}':`);
   if (!replacementChar || replacementChar.length !== 1) {
     alert("Please enter a single replacement character.");
@@ -135,6 +144,7 @@ export function searchAndReplace(currentText, updatePreview, currentStyle) {
 
   // Create a new styled text array
   const newText = textWithoutCursor.map(c => {
+    // replace all
     if (c.char === charToFind) {
       return { ...c, char: replacementChar }; // replace only the character, keep style
     }

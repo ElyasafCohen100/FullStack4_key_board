@@ -33,6 +33,7 @@ export default function Key({ char, onClick, altText, isActive, wide, tall, spac
   if (isActive) classes.push(styles.active);
 
   return (
+    // build the buttons, if the button has a special class, invoke its class name
     <button className={classes.join(" ")} onClick={handleClick}>
       {altText === "" || altText == null ? char : altText}
     </button>

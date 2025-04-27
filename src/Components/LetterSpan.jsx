@@ -28,7 +28,7 @@ export default function LetterSpan({ charObj }) {
     display: "inline",
   };
 
-  // ========= Display the letter with "fire" class for special effect ========== //
+  // ========= Display the letter with the correct styles ========== //
   return (
     <span className="letter-fire" style={style}>
       {char}
